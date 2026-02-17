@@ -20,7 +20,7 @@ class Product(models.Model):
 class Customer(models.Model):
     first_name=models.Textfield(max_length=200)
     last_name=models.Textfield(max_length=200)
-    email=model.EmailField(unique=True, max_length=200)
+    email=models.EmailField(unique=True, max_length=200)
     phone=models.CharField(max_length=200)
     birth_date = models.DateField(null=True)
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default-'MEMBERSHIP_BRONZE')
@@ -41,5 +41,17 @@ class Order(models.Model):
 class Adresss(models.Models):
     street = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
-    customer = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
+class Collection(models.Model):
+    Products= models.ForeignKey(Products, on_delete=models.CASCADE)
+
+class Order(models.Models):
+    Customer= models.ForeignKey(Customer, on_delete=models.CASCADE)
+
+class Item(models.Model):
+    Order=models.ForeignKey(order, on_delete=models.CASCADE)
+
+
+class Cart(models.Model):
+    Items=models.ForeignKey(Items, on_delete=models.CASCADE)
