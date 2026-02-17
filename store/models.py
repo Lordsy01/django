@@ -35,6 +35,11 @@ class Order(models.Model):
         ('PAYMENT-STATUS_COMPLETE', 'Complete')
         ('PAYMENT_STATUS_FAILED', 'Failed')
     ]
-    place_at=medels.DateTimeField(auto_now=True)
-    payment_status=models.CharField
+    place_at=medels.DateTimeField(auto_now_add=True)
+    payment_status=models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default= PAYMENT_STATUS_PENDING  )
+
+class Adresss(models.Models):
+    street = models.CharField(max_length=200)
+    city = models.CharField(max_length=200)
+    customer = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True)
 
