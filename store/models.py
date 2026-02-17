@@ -1,6 +1,9 @@
 from django.db import models
 
 # Create your models here.
+class Collection(models.Model):
+    title = models.CharField(max_length=200)
+
 class Product(models.Model):
     MEMBERSHIP_BRONZE='B'
     MEMBERSHIP_SILVER='S'
@@ -16,6 +19,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory= models.IntergerField()
     last_update = models.DateTimeField(auto_now=True)
+    collection=models.ForeignKey(collection, on_delete=models.PROTECT)
 
 class Customer(models.Model):
     first_name=models.Textfield(max_length=200)
@@ -37,21 +41,25 @@ class Order(models.Model):
     ]
     place_at=medels.DateTimeField(auto_now_add=True)
     payment_status=models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default= PAYMENT_STATUS_PENDING  )
+    Customer= models.ForeignKey(Customer, on_delete=models.PROTECT)
+
 
 class Adresss(models.Models):
     street = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
-class Collection(models.Model):
-    Products= models.ForeignKey(Products, on_delete=models.CASCADE)
-
-class Order(models.Models):
-    Customer= models.ForeignKey(Customer, on_delete=models.CASCADE)
-
-class Item(models.Model):
-    Order=models.ForeignKey(order, on_delete=models.CASCADE)
+class OrderItem(models.Model):
+    Order=models.ForeignKey(order, on_delete=models.PROTECT)
+    Prod=models.ForeignKey(Product, on_delete=models.PROTECT)
+    quantity = models.PositiveSmallIntergerField()
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
 
 
 class Cart(models.Model):
-    Items=models.ForeignKey(Items, on_delete=models.CASCADE)
+    created_at= models.DateTimeField(auto_now_add=true)
+
+class cartItems(models.Model):
+    product= models.ForeignKey(product, on_delete=models.CASCADE)
+    cart=models.ForeignKey(card, on_delete=models.CASCADE)
+    quantity= models.PositiveSmallIntergerField()
