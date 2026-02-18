@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class promotion(models.Model):
+class Promotion(models.Model):
     description = models.CharField(max_length=200)
     discount = models.FloatField()
 
@@ -21,16 +21,16 @@ class Product(models.Model):
     #     ('MEMBERSHIP_GOLD', 'Gold')
     # ]
     title = models.CharField(max_length=255)
-    discription = models.Textfield()
+    discription = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    inventory= models.IntergerField()
+    inventory= models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
     collection=models.ForeignKey(Collection, on_delete=models.PROTECT)
     promotions = models.ManyToManyField(Promotion)
 
 class Customer(models.Model):
-    first_name=models.Textfield(max_length=200)
-    last_name=models.Textfield(max_length=200)
+    first_name=models.CharField(max_length=200)
+    last_name=models.CharField(max_length=200)
     email=models.EmailField(unique=True, max_length=200)
     phone=models.CharField(max_length=200)
     birth_date = models.DateField(null=True)
@@ -42,31 +42,31 @@ class Order(models.Model):
     PAYMENT_STATUS_FAILED = 'F'
 
     PAYMENT_STATUS_CHOICES=[
-        ('PAYMENT_STATUS_PENDING', 'Pending')
-        ('PAYMENT-STATUS_COMPLETE', 'Complete')
+        ('PAYMENT_STATUS_PENDING', 'Pending'),
+        ('PAYMENT-STATUS_COMPLETE', 'Complete'),
         ('PAYMENT_STATUS_FAILED', 'Failed')
     ]
-    place_at=medels.DateTimeField(auto_now_add=True)
-    payment_status=models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default= PAYMENT_STATUS_PENDING  )
+    place_at=models.DateTimeField(auto_now_add=True)
+    payment_status=models.CharField(max_length=200, choices=PAYMENT_STATUS_CHOICES, default= PAYMENT_STATUS_PENDING  )
     Customer= models.ForeignKey(Customer, on_delete=models.PROTECT)
 
 
-class Adresss(models.Models):
+class Adresss(models.Model):
     street = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 class OrderItem(models.Model):
-    Order=models.ForeignKey(order, on_delete=models.PROTECT)
+    Order=models.ForeignKey(Order, on_delete=models.PROTECT)
     Prod=models.ForeignKey(Product, on_delete=models.PROTECT)
-    quantity = models.PositiveSmallIntergerField()
+    quantity = models.PositiveSmallIntegerField()
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
 
 
 class Cart(models.Model):
-    created_at= models.DateTimeField(auto_now_add=true)
+    created_at= models.DateTimeField(auto_now_add=True)
 
 class cartItems(models.Model):
-    product= models.ForeignKey(product, on_delete=models.CASCADE)
-    cart=models.ForeignKey(card, on_delete=models.CASCADE)
-    quantity= models.PositiveSmallIntergerField()
+    product= models.ForeignKey(Product, on_delete=models.CASCADE)
+    cart=models.ForeignKey(Cart, on_delete=models.CASCADE)
+    quantity= models.PositiveSmallIntegerField()
